@@ -26,7 +26,7 @@ object Boot extends Helpers {
         |2. Draw Horizontal Line: L 1 2 6 2
         |3. Draw Vertical Line: L 6 3 6 4
         |4. Draw Square: R 14 1 18 3
-        |5. Fill area: B 10 3
+        |5. Fill area: B 10 3 o
         |
         |""".stripMargin)
 
