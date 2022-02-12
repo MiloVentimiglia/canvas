@@ -1,6 +1,8 @@
 package core
 
+import core.DrawingService.DrawingProgram
 import core.model._
+
 import scala.io.StdIn
 import scala.util.control.Breaks.{break, breakable}
 import org.slf4j.{Logger, LoggerFactory}

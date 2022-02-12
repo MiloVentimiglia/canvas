@@ -1,7 +1,9 @@
 package core
 
+import core.DrawingService.DrawingProgram
 import core.model._
 import org.slf4j.{Logger, LoggerFactory}
+
 import scala.util.{Failure, Success, Try}
 
 object Controller extends Helpers {

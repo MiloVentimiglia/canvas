@@ -1,6 +1,6 @@
 package coreBenchmarks
 
-import core.DrawingProgram
+import core.DrawingService.DrawingProgram
 import org.openjdk.jmh.annotations._
 
 import java.util.concurrent.TimeUnit

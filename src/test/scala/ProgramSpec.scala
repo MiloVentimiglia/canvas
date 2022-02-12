@@ -1,8 +1,9 @@
-import core.DrawingProgram
+import core.DrawingService.DrawingProgram
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfter, PrivateMethodTester}
 import org.slf4j.{Logger, LoggerFactory}
+
 import scala.collection.mutable
 
 class ProgramSpec extends AnyFlatSpec with Matchers with BeforeAndAfter with PrivateMethodTester{

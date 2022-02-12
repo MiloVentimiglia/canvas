@@ -1,21 +1,21 @@
 package core
 
-trait Helpers {
+import core.DrawingService.DrawingProgram
 
-  import DrawingProgram.{CanvasHorizontalLine}
+trait Helpers {
 
   def isCanvasEmpty(implicit program: DrawingProgram): Boolean = {
     program.canvas.isEmpty
   }
 
   def isAlreadyColored(x: Int, y: Int, colour: String)(implicit program: DrawingProgram): Boolean = {
-    val line: CanvasHorizontalLine = program.canvas(y)
+    val line: String = program.canvas(y)
     val colorAtXY: String = line.substring(x)
     if (colorAtXY == colour) true else false
   }
 
-  def isAlreadyColored(x: Int, color: String, line: CanvasHorizontalLine): Boolean = {
+  def isAlreadyColored(x: Int, colour: String, line: String): Boolean = {
     val colorAtXY: String = line.substring(x)
-    if (colorAtXY == color) true else false
+    if (colorAtXY == colour) true else false
   }
 }

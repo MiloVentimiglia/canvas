@@ -1,4 +1,6 @@
-package core
+package core.DrawingService
+
+import core.Helpers
 
 import scala.annotation.tailrec
 import scala.collection.mutable
@@ -6,9 +8,7 @@ import scala.util.Random
 
 object DrawingProgram {
 
-  type CanvasAxialPosition = Int
-  type CanvasHorizontalLine = String
-  type Canvas = mutable.HashMap[CanvasAxialPosition, CanvasHorizontalLine]
+  type Canvas = mutable.HashMap[Int, String]
   type Coordinates = (Int, Int)
 
   val LINEMARKER = "x"
@@ -25,7 +25,7 @@ class DrawingProgram extends Helpers {
 
   import DrawingProgram._
 
-  var canvas: Canvas = mutable.HashMap[CanvasAxialPosition, CanvasHorizontalLine]()
+  var canvas: Canvas = mutable.HashMap[Int, String]()
 
   def canvasHeight: Int = canvas.size
   def canvasWidth: Int = canvas(0).length
