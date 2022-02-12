@@ -1,13 +1,12 @@
 package core
 
-import core.DrawingService.DrawingProgram
 import core.model._
-
+import core.DrawingService.DrawingProgram
 import scala.io.StdIn
 import scala.util.control.Breaks.{break, breakable}
 import org.slf4j.{Logger, LoggerFactory}
 
-object Boot extends Helpers with Controller {
+object Boot extends Controller {
 
   def main(args: Array[String]): Unit = {
 

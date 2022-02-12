@@ -1,12 +1,11 @@
 package core.DrawingService
 
-import core.Helpers
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.util.Random
 
 
-class DrawingProgram extends Helpers {
+class DrawingProgram {
 
   import DrawingProgram._
 
@@ -185,5 +184,10 @@ object DrawingProgram {
   val EMPTY_COORDINATE = "EMPTY"
   val COLORED_COORDINATE = "ALREADY_COLORED"
   val BLOCKED_COORDINATE = "BLOCKED"
+
+  def isAlreadyColored(x: Int, colour: String, line: String): Boolean = {
+    val colorAtXY: String = line.substring(x)
+    if (colorAtXY == colour) true else false
+  }
 
 }

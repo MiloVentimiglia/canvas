@@ -6,7 +6,7 @@ import org.slf4j.{Logger, LoggerFactory}
 import scala.util.Try
 
 
-trait Controller extends Helpers {
+trait Controller {
 
   import Controller._
   lazy val logger: Logger = LoggerFactory.getLogger(this.getClass)
@@ -104,6 +104,9 @@ trait Controller extends Helpers {
 }
 
 object Controller {
+
+  def isCanvasEmpty(implicit program: DrawingProgram): Boolean =
+    program.canvas.isEmpty
 
   def isCoordinatesTypesCorrect(implicit inputs: List[String]): Boolean =
     inputs.map(_.safeToInt).forall(_.isDefined)
