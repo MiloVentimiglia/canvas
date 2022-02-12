@@ -9,9 +9,7 @@ object DrawingProgram {
   type CanvasAxialPosition = Int
   type CanvasHorizontalLine = String
   type Canvas = mutable.HashMap[CanvasAxialPosition, CanvasHorizontalLine]
-
   type Coordinates = (Int, Int)
-  type Colour = String
 
   val LINEMARKER = "x"
   val WHITESPACE = " "
@@ -28,6 +26,7 @@ class DrawingProgram extends Helpers {
   import DrawingProgram._
 
   var canvas: Canvas = mutable.HashMap[CanvasAxialPosition, CanvasHorizontalLine]()
+
   def canvasHeight: Int = canvas.size
   def canvasWidth: Int = canvas(0).length
 
@@ -46,14 +45,14 @@ class DrawingProgram extends Helpers {
     this
   }
 
-  def displayCanvas(): DrawingProgram = {
+  def displayCanvas: DrawingProgram = {
     for (y <- 0 until canvasHeight) {
       println(canvas(y))
     }
     this
   }
 
-  def drawHorizontalLine(x1: Int, x2: Int, y1: Int): DrawingProgram = {
+  def drawHorizontalLine(x1: Int, y1: Int, x2: Int): DrawingProgram = {
     val line: String = canvas(y1)
     val lineToAdd: String = LINEMARKER * (x2 - x1 + 1)
     canvas(y1) = line.substring(0, x1) + lineToAdd + line.substring(x2 + 1, canvasWidth)
@@ -62,7 +61,7 @@ class DrawingProgram extends Helpers {
     this
   }
 
-  def drawVerticalLine(x1: Int, x2: Int, y1: Int, y2: Int): DrawingProgram = {
+  def drawVerticalLine(x1: Int, y1: Int, x2: Int, y2: Int): DrawingProgram = {
     for (y <- y1 until y2 + 1) {
       val line: String = canvas(y)
       val lineToAdd: String = LINEMARKER
@@ -73,7 +72,8 @@ class DrawingProgram extends Helpers {
     this
   }
 
-  def drawSquare(x1: Int, x2: Int, y1: Int, y2: Int): DrawingProgram = {
+  def drawSquare(x1: Int, y1: Int, x2: Int, y2: Int): DrawingProgram = {
+
     for (y <- y1 until y2 + 1) {
       if (y == y1 || y == y2) {
         val line: String = canvas(y)
@@ -91,7 +91,7 @@ class DrawingProgram extends Helpers {
   }
 
   @tailrec
-  final def fillingArea(x: Int, y: Int, color: Colour, iter: Double = 1.0, acc: Double = 1.0): Unit = {
+  final def fillingArea(x: Int, y: Int, color: String, iter: Double = 1.0, acc: Double = 1.0): Unit = {
 
     /**
      * Approach (Stochastic Random Walk):
@@ -140,7 +140,7 @@ class DrawingProgram extends Helpers {
     )
   }
 
-  private def getPossibleDirections(list: List[Coordinates], filling: Colour): Map[Coordinates, String] = {
+  private def getPossibleDirections(list: List[Coordinates], filling: String): Map[Coordinates, String] = {
     var adjacentPointInfo = Map[Coordinates, String]()
 
     list.foreach { coord =>
@@ -178,7 +178,7 @@ class DrawingProgram extends Helpers {
     }
   }
 
-  private def fillingPoint(nextPoint: Coordinates, filling: Colour): Unit = {
+  private def fillingPoint(nextPoint: Coordinates, filling: String): Unit = {
     val x = nextPoint._1
     val y = nextPoint._2
 

@@ -14,7 +14,8 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % scalatestVersion,
       "ch.qos.logback" % "logback-classic" % logbackVersion,
-      "org.slf4j" % "log4j-over-slf4j" % slf4jVersion
+      "org.slf4j" % "log4j-over-slf4j" % slf4jVersion,
+      "org.typelevel" %% "cats-core" % catsEffects
     )
   )
   .enablePlugins(JmhPlugin)
