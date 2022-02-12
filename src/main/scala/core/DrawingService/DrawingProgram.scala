@@ -1,25 +1,10 @@
 package core.DrawingService
 
 import core.Helpers
-
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.util.Random
 
-object DrawingProgram {
-
-  type Canvas = mutable.HashMap[Int, String]
-  type Coordinates = (Int, Int)
-
-  val LINEMARKER = "x"
-  val WHITESPACE = " "
-  val TOP_FRAME = "-"
-  val SIDE_FRAME = "|"
-  val EMPTY_COORDINATE = "EMPTY"
-  val COLORED_COORDINATE = "ALREADY_COLORED"
-  val BLOCKED_COORDINATE = "BLOCKED"
-
-}
 
 class DrawingProgram extends Helpers {
 
@@ -42,13 +27,6 @@ class DrawingProgram extends Helpers {
       }
     }
     this.canvas = cleanCanvas
-    this
-  }
-
-  def displayCanvas: DrawingProgram = {
-    for (y <- 0 until canvasHeight) {
-      println(canvas(y))
-    }
     this
   }
 
@@ -87,6 +65,13 @@ class DrawingProgram extends Helpers {
     }
 
     this.canvas = canvas
+    this
+  }
+
+  def displayCanvas: DrawingProgram = {
+    for (y <- 0 until canvasHeight) {
+      println(canvas(y))
+    }
     this
   }
 
@@ -186,5 +171,19 @@ class DrawingProgram extends Helpers {
     canvas(y) = line.substring(0, x) + filling + line.substring(x + 1, canvasWidth)
     this.canvas = canvas
   }
+}
+
+object DrawingProgram {
+
+  type Canvas = mutable.HashMap[Int, String]
+  type Coordinates = (Int, Int)
+
+  val LINEMARKER = "x"
+  val WHITESPACE = " "
+  val TOP_FRAME = "-"
+  val SIDE_FRAME = "|"
+  val EMPTY_COORDINATE = "EMPTY"
+  val COLORED_COORDINATE = "ALREADY_COLORED"
+  val BLOCKED_COORDINATE = "BLOCKED"
 
 }

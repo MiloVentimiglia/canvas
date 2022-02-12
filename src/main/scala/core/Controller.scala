@@ -1,56 +1,9 @@
 package core
 
-import core.DrawingService.DrawingProgram
 import core.model._
+import core.DrawingService.DrawingProgram
 import org.slf4j.{Logger, LoggerFactory}
-
-import scala.util.{Failure, Success, Try}
-
-object Controller extends Helpers {
-
-  def isCoordinatesTypesCorrect(implicit inputs: List[String]): Boolean =
-    inputs.map(_.safeToInt).forall(_.isDefined)
-
-  def isYCoordinatesOrdered(implicit inputs: List[String]): Boolean =
-    Try(inputs(3).toInt > inputs(1).toInt).isSuccess
-
-  def isXCoordinatesOrdered(implicit inputs: List[String]): Boolean =
-    Try(inputs(2).toInt > inputs(0).toInt).isSuccess
-
-  def isDiagonalLine(implicit inputs: List[String]): Boolean =
-    inputs.to(Set).size == inputs.length
-
-  def isInsideCanvas(implicit program: DrawingProgram, inputs: List[String]): Boolean = {
-
-    val inSafe = inputs.map(_.safeToInt)
-
-    val XWithinLimits: Either[Throwable, Boolean] =
-      Try{
-        (inSafe(0).get > 0) && (inSafe(2).get < program.canvasWidth)
-      }.toEither
-
-    val YWithinLimits: Either[Throwable, Boolean] = Try(
-      (inSafe(1).get > 0) && (inSafe(3).get < program.canvasHeight)
-    ).toEither
-
-    val limits = for {
-      a <- XWithinLimits
-      b <- YWithinLimits
-    } yield (a, b)
-
-    !limits.toString.contains("false")
-  }
-
-  implicit class RichOptionConvert(val s: String) extends AnyVal {
-    def safeToInt: Option[Int] =
-      try {
-        Some(s.toInt)
-      } catch {
-        case _: NullPointerException => None
-        case _: NumberFormatException => None
-      }
-  }
-}
+import scala.util.Try
 
 
 trait Controller extends Helpers {
@@ -62,7 +15,6 @@ trait Controller extends Helpers {
     def isInputCorrect: Boolean
     def safeRun: Unit
   }
-
 
   implicit class CreateCanvasSafe(val input: CreateCanvas)(implicit program: DrawingProgram, numberInputs: Int) extends IOMessage[Feature] {
     implicit val args: List[String] = List(input.width, input.height)
@@ -84,7 +36,6 @@ trait Controller extends Helpers {
 
 
   implicit class DrawLineSafe(val input: DrawLine)(implicit program: DrawingProgram, numberInputs: Int) extends IOMessage[Feature] {
-
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
     override def isInputCorrect: Boolean = (!isCanvasEmpty) & (!isDiagonalLine) & isCoordinatesTypesCorrect
 
@@ -134,7 +85,7 @@ trait Controller extends Helpers {
 
   implicit class FillAreaSafe(val input: FillArea)(implicit program: DrawingProgram, implicit val numberInputs: Int) extends IOMessage[Feature] {
     implicit val args: List[String] = List(input.x, input.y, input.colour)
-    override def isInputCorrect: Boolean = (!isCanvasEmpty) & isInsideCanvas
+    override def isInputCorrect: Boolean = (!isCanvasEmpty)
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
@@ -150,9 +101,31 @@ trait Controller extends Helpers {
       }
     }
   }
-
 }
 
+object Controller {
 
+  def isCoordinatesTypesCorrect(implicit inputs: List[String]): Boolean =
+    inputs.map(_.safeToInt).forall(_.isDefined)
+
+  def isYCoordinatesOrdered(implicit inputs: List[String]): Boolean =
+    Try(inputs(3).toInt > inputs(1).toInt).isSuccess
+
+  def isXCoordinatesOrdered(implicit inputs: List[String]): Boolean =
+    Try(inputs(2).toInt > inputs(0).toInt).isSuccess
+
+  def isDiagonalLine(implicit inputs: List[String]): Boolean =
+    inputs.to(Set).size == inputs.length
+
+  implicit class RichOptionConvert(val s: String) extends AnyVal {
+    def safeToInt: Option[Int] =
+      try {
+        Some(s.toInt)
+      } catch {
+        case _: NullPointerException => None
+        case _: NumberFormatException => None
+      }
+  }
+}
 
 
