@@ -1,6 +1,6 @@
 package core.FillAreaService
 
-import scala.util.Random
+import scala.util.{Failure, Random, Success, Try}
 import scala.annotation.tailrec
 import core.DrawingService.DrawingProgram
 import core.DrawingService.DrawingProgram._
@@ -8,114 +8,121 @@ import core.DrawingService.DrawingProgram._
 final class FillAreaProgram(val program: DrawingProgram) {
 
   /**
-   * Fill an enclosed area with a specified colour
-   * @param x; Initial X coordinate in the canvas
-   * @param y; Initial Y coordinate in the canvas
-   * @param iter; Iteration number
-   * @param iter; Iteration number
-   * @param slideDuration  sliding interval of the window (i.e., the interval after which
-   *                       the new DStream will generate RDDs); must be a multiple of this
-   *                       DStream's batching interval
+   * Fill an enclosed area with a specified colour.
+   *
+   * @param x      ; X coordinate initial point
+   * @param y      ; Y coordinate initial point
+   * @param colour ; Colour filling
+   * @param iter   ; Number of iterations elapsed
+   * @param acc    ; Number of iterations to a position without colour that have been filled.
    */
 
+  import FillAreaProgram._
+
   @tailrec
-  def fillingArea(x: Int, y: Int, colour: String, iter: Double = 1.0, acc: Double = 1.0): Unit = {
+  def fillingArea(x: Int, y: Int, colour: String, iteration: Double = 1.0, acc: Double = 1.0): Unit = {
+    if (threshold(acc, iteration) > 1E-05) {
 
-    /**
-     * Approach (Stochastic Random Walk):
-     * iter - number of iterations
-     * acc - accumulator with the number of coordinates which have been colored during execution
-     *
-     * 1. Pick initial point in the canvas
-     * 2. Discover in which directions it is possible to move into by looking into the neighboring coordinates.
-     * 3. Move into next position. When all the adjacent positions have been already colored, then pick one at random.
-     * 4. If new position is not colored yet, add "color" and increment accumulator.
-     *    Otherwise move to the next possible position without incrementing the accumulator.
-     * 5. Iterate until the ratio between the number of iterations and the accumulator is above 3.
-     */
+      var newAcc: Double = acc
+      val newIter: Double = inc(iteration)
 
-    if (ratio(iter, acc) < 10) {
-      var newAcc = acc
-      val adjacentPoints: List[Coordinates] = adjacentCoord(x, y)
-      val possibleDirections: Map[Coordinates, String] = scanAdjacentCoord(adjacentPoints, colour)
-      val nextPoint: (Coordinates, String) = getNextPoint(possibleDirections)
+      val nodes: List[Coordinates] = nodesCoordinates(x, y)
+      val nodesColours: Map[Coordinates, String] = mapNodes(nodes, colour)
+      val nextPoint: (Coordinates, String) = getNextPoint(nodesColours)
 
-      val newCoordinates = nextPoint._1
-      val newX = newCoordinates._1
-      val newY = newCoordinates._2
-      val flag = nextPoint._2
+      val newX: Int = nextPoint._1._1
+      val newY: Int = nextPoint._1._2
+      val fill: String = nextPoint._2
 
-      if (flag == EMPTY_COORDINATE) {newAcc += 1}
-      if (!isAlreadyColored(newX, colour, program.canvas(newY))) fillingPoint(newCoordinates, colour)
+      if (fill == EMPTY_NODE) {
+        newAcc += 1
+        fillingPoint(newX, newY, colour)
+      }
 
-      fillingArea(newX, newY, colour, incIter(iter), newAcc)
+      fillingArea(newX, newY, colour, newIter, newAcc)
     }
   }
 
-  private def ratio(iter: Double, acc: Double): Double = iter / acc
+  private def threshold(acc: Double, iteration: Double): Double = acc / iteration
 
-  private def incIter(iter: Double): Double = iter + 1
+  private def inc(iteration: Double): Double = iteration + 1
 
-  private def adjacentCoord(x: Int, y: Int): List[Coordinates] = {
-    List(
-      (x - 1, y + 1),
+  private def nodesCoordinates(x: Int, y: Int): List[Coordinates] = {
+    List((x - 1, y + 1),
       (x, y + 1),
       (x + 1, y + 1),
       (x - 1, y),
       (x + 1, y),
       (x - 1, y - 1),
       (x, y - 1),
-      (x + 1, y - 1),
-    )
+      (x + 1, y - 1))
   }
 
-  private def scanAdjacentCoord(list: List[Coordinates], colour: String): Map[Coordinates, String] = {
-    var pointsColour = Map[Coordinates, String]()
+  private def mapNodes(list: List[Coordinates], colour: String): Map[Coordinates, String] = {
+    var map = Map[Coordinates, String]()
+
     list.foreach { coord =>
       val x = coord._1
       val y = coord._2
-      val currentColour: String = program.canvas(y)(x).toString
+      val filling: String = program.canvas(y)(x).toString
 
-      if (currentColour == WHITESPACE) {
-        pointsColour = pointsColour + (coord -> EMPTY_COORDINATE)
-      } else if (currentColour == colour) {
-        pointsColour = pointsColour + (coord -> COLORED_COORDINATE)
+      if (filling == WHITESPACE) {
+        map = map + (coord -> EMPTY_NODE)
+      } else if (filling == colour) {
+        map = map + (coord -> COLORED_NODE)
       }
     }
-    pointsColour
+    map
   }
 
-  private def getNextPoint(
-        possibleMoves: Map[Coordinates, String]): (Coordinates, String) = {
+  private def getNextPoint(mappedNodes: Map[Coordinates, String]): (Coordinates, String) = {
+    val nodesNoColour: Seq[Coordinates] = mappedNodes.toList.filter(_._2.contains(EMPTY_NODE)).map(_._1)
+    val nodesColour: Seq[Coordinates] = mappedNodes.toList.filter(_._2.contains(COLORED_NODE)).map(_._1)
 
-    val possibleMovesToEmptyCoordinates: Seq[Coordinates] =
-      possibleMoves.toList.filter(_._2.contains(EMPTY_COORDINATE)).map(_._1)
-    val possibleMovesToColoredCoordinates: Seq[Coordinates] =
-      possibleMoves.toList.filter(_._2.contains(COLORED_COORDINATE)).map(_._1)
-    if (possibleMovesToEmptyCoordinates.nonEmpty) {
+    if (nodesNoColour.nonEmpty) {
       val r = new Random()
-      val size = possibleMovesToEmptyCoordinates.length
+      val size = nodesNoColour.length
       val index = r.nextInt(size)
-      (possibleMovesToEmptyCoordinates(index), EMPTY_COORDINATE)
+      (nodesNoColour(index), EMPTY_NODE)
     } else {
       val r = new Random()
-      val size = possibleMovesToColoredCoordinates.length
+      val size = nodesColour.length
       val index = r.nextInt(size)
-      (possibleMovesToColoredCoordinates(index), COLORED_COORDINATE)
+      (nodesColour(index), COLORED_NODE)
     }
   }
 
-  private def fillingPoint(nextPoint: Coordinates, filling: String): Unit = {
-    val x = nextPoint._1
-    val y = nextPoint._2
+  private def fillingPoint(x: Int, y: Int, colour: String): Unit = {
+    val left = program.canvas(y).substring(0, x)
+    val right = program.canvas(y).substring(x, program.canvasWidth)
 
-    val line: String = program.canvas(y)
-    program.canvas(y) = line.substring(0, x) + filling + line.substring(x + 1, program.canvasWidth)
+    program.canvas(y) = fillTrailing(left, colour) + fillHeading(right, colour)
   }
 
-  private def isAlreadyColored(x: Int, colour: String, line: String): Boolean = {
-    val colorAtXY: String = line.substring(x)
-    if (colorAtXY == colour) true else false
+  private def fillTrailing(line: String, colour: String): String = {
+    val pattern = "\\s+".r
+    Try{
+      pattern.findAllIn(line).next().length
+    } match {
+      case Success(value) => line.replaceAll("^\\s+", colour * value)
+      case Failure(_) => line
+    }
   }
 
+  private def fillHeading(line: String, colour: String): String = {
+    val pattern = "^\\s+".r
+    Try {
+      pattern.findAllIn(line).next().length
+    } match {
+      case Success(value) => line.replaceAll("^\\s+", colour * value)
+      case Failure(_) => line
+    }
+  }
+}
+
+
+object FillAreaProgram {
+  val EMPTY_NODE = "EMPTY"
+  val COLORED_NODE = "ALREADY_COLORED"
+  val BLOCKED_NODE = "BLOCKED"
 }

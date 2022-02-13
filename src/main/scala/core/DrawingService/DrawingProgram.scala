@@ -82,8 +82,4 @@ object DrawingProgram {
   val WHITESPACE = " "
   val TOP_FRAME = "-"
   val SIDE_FRAME = "|"
-  val EMPTY_COORDINATE = "EMPTY"
-  val COLORED_COORDINATE = "ALREADY_COLORED"
-  val BLOCKED_COORDINATE = "BLOCKED"
-
 }
