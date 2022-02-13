@@ -1,4 +1,5 @@
 //import core.DrawingService.DrawingProgram
+//import core.FillAreaService.FillAreaProgram
 //import org.scalatest.flatspec.AnyFlatSpec
 //import org.scalatest.matchers.should.Matchers
 //import org.scalatest.{BeforeAndAfter, PrivateMethodTester}
@@ -9,6 +10,7 @@
 //class ProgramSpec extends AnyFlatSpec with Matchers with BeforeAndAfter with PrivateMethodTester{
 //
 //  import DrawingProgram._
+//  import FillAreaProgram.EMPTY_NODE
 //
 //  protected var logger: Logger = LoggerFactory.getLogger(this.getClass)
 //  var program: DrawingProgram = _
@@ -49,14 +51,14 @@
 //    val output = program.invokePrivate(mockPossibleDirections(inputList, color))
 //
 //    val expectedOutput = mutable.HashMap(
-//      (2,1) -> EMPTY_COORDINATE,
-//      (1,2) -> EMPTY_COORDINATE,
-//      (1,1) -> EMPTY_COORDINATE,
-//      (3,2) -> EMPTY_COORDINATE,
-//      (3,1) -> EMPTY_COORDINATE,
-//      (3,3) -> EMPTY_COORDINATE,
-//      (2,3) -> EMPTY_COORDINATE,
-//      (1,3) -> EMPTY_COORDINATE
+//      (2,1) -> EMPTY_NODE,
+//      (1,2) -> EMPTY_NODE,
+//      (1,1) -> EMPTY_NODE,
+//      (3,2) -> EMPTY_NODE,
+//      (3,1) -> EMPTY_NODE,
+//      (3,3) -> EMPTY_NODE,
+//      (2,3) -> EMPTY_NODE,
+//      (1,3) -> EMPTY_NODE
 //    )
 //
 //    output should equal(expectedOutput)

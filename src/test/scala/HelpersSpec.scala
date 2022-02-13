@@ -1,10 +1,10 @@
-//import core.{DrawingProgram, Helpers}
+//import core.DrawingService.DrawingProgram
 //import org.scalatest.flatspec.AnyFlatSpec
 //import org.scalatest.matchers.should.Matchers
 //import org.scalatest.BeforeAndAfter
 //import org.slf4j.{Logger, LoggerFactory}
 //
-//class HelpersSpec extends AnyFlatSpec with Matchers with BeforeAndAfter with Helpers {
+//class HelpersSpec extends AnyFlatSpec with Matchers with BeforeAndAfter {
 //
 //  protected val logger: Logger = LoggerFactory.getLogger(this.getClass)
 //  implicit var program: DrawingProgram = _

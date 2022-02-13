@@ -7,21 +7,11 @@ import core.DrawingService.DrawingProgram._
 
 final class FillAreaProgram(val program: DrawingProgram) {
 
-  /**
-   * Fill an enclosed area with a specified colour.
-   *
-   * @param x      ; X coordinate initial point
-   * @param y      ; Y coordinate initial point
-   * @param colour ; Colour filling
-   * @param iter   ; Number of iterations elapsed
-   * @param acc    ; Number of iterations to a position without colour that have been filled.
-   */
-
   import FillAreaProgram._
 
   @tailrec
   def fillingArea(x: Int, y: Int, colour: String, iteration: Double = 1.0, acc: Double = 1.0): Unit = {
-    if (threshold(acc, iteration) > 1E-05) {
+    if (threshold(acc, iteration) > 1E-03) {
 
       var newAcc: Double = acc
       val newIter: Double = inc(iteration)
