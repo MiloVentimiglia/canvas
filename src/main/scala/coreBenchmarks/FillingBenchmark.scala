@@ -1,6 +1,7 @@
 package coreBenchmarks
 
 import core.DrawingService.DrawingProgram
+import core.FillAreaService.FillAreaProgram
 import org.openjdk.jmh.annotations._
 
 import java.util.concurrent.TimeUnit
@@ -14,7 +15,10 @@ object FillingBenchmark {
     private val canvasWidth: Int = 50
     private val canvasHeight: Int = 50
     private val color: String = "o"
-    private def setup(): DrawingProgram = new DrawingProgram().createCanvas(canvasWidth, canvasHeight)
+    private def setup(): FillAreaProgram = {
+      val drawingProgram = new DrawingProgram().createCanvas(canvasWidth, canvasHeight)
+      new FillAreaProgram(drawingProgram)
+    }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     def fillCanvas(): Unit = {

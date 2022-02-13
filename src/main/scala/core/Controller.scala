@@ -1,8 +1,10 @@
 package core
 
+import core.FillAreaService.FillAreaProgram
 import core.model._
 import core.DrawingService.DrawingProgram
 import org.slf4j.{Logger, LoggerFactory}
+
 import scala.util.Try
 
 
@@ -16,7 +18,7 @@ trait Controller {
     def safeRun: Unit
   }
 
-  implicit class CreateCanvasSafe(val input: CreateCanvas)(implicit program: DrawingProgram, numberInputs: Int) extends IOMessage[Feature] {
+  implicit class CreateCanvasSafe(val input: CreateCanvas)(implicit program: DrawingProgram) extends IOMessage[Feature] {
     implicit val args: List[String] = List(input.width, input.height)
     override def isInputCorrect: Boolean = isCoordinatesTypesCorrect
 
@@ -35,7 +37,7 @@ trait Controller {
   }
 
 
-  implicit class DrawLineSafe(val input: DrawLine)(implicit program: DrawingProgram, numberInputs: Int) extends IOMessage[Feature] {
+  implicit class DrawLineSafe(val input: DrawLine)(implicit program: DrawingProgram) extends IOMessage[Feature] {
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
     override def isInputCorrect: Boolean = (!isCanvasEmpty) & (!isDiagonalLine) & isCoordinatesTypesCorrect
 
@@ -62,7 +64,7 @@ trait Controller {
   }
 
 
-  implicit class DrawSquareSafe(val input: DrawSquare)(implicit program: DrawingProgram, numberInputs: Int) extends IOMessage[Feature] {
+  implicit class DrawSquareSafe(val input: DrawSquare)(implicit program: DrawingProgram) extends IOMessage[Feature] {
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
     override def isInputCorrect: Boolean = (!isCanvasEmpty) && isXCoordinatesOrdered && isYCoordinatesOrdered
 
@@ -74,7 +76,6 @@ trait Controller {
         val y2: Int = input.y2.toInt
 
         program.drawSquare(x1, y1, x2, y2)
-        logger.info("Square has been drawn.")
         program.displayCanvas
       } else {
         logger.info("Arguments are not correctly introduced or canvas does not exist.")
@@ -83,9 +84,9 @@ trait Controller {
   }
 
 
-  implicit class FillAreaSafe(val input: FillArea)(implicit program: DrawingProgram, implicit val numberInputs: Int) extends IOMessage[Feature] {
+  implicit class FillAreaSafe(val input: FillArea)(implicit program: DrawingProgram, fillService: FillAreaProgram) extends IOMessage[Feature] {
     implicit val args: List[String] = List(input.x, input.y, input.colour)
-    override def isInputCorrect: Boolean = (!isCanvasEmpty)
+    override def isInputCorrect: Boolean = !isCanvasEmpty
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
@@ -93,8 +94,7 @@ trait Controller {
         val y1: Int = input.y.toInt
         val colour: String = input.colour
 
-        program.fillingArea(x1, y1, colour)
-        logger.info("Area has been filled.")
+        fillService.fillingArea(x1, y1, colour)
         program.displayCanvas
       } else {
         logger.info("Arguments are not correctly introduced or canvas does not exist.")

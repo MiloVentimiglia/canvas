@@ -1,8 +1,9 @@
 package core
 
+import scala.io.StdIn
+import core.FillAreaService.FillAreaProgram
 import core.model._
 import core.DrawingService.DrawingProgram
-import scala.io.StdIn
 import scala.util.control.Breaks.{break, breakable}
 import org.slf4j.{Logger, LoggerFactory}
 
@@ -11,7 +12,8 @@ object App extends Controller {
   def main(args: Array[String]): Unit = {
 
     lazy val logger: Logger = LoggerFactory.getLogger(this.getClass)
-    implicit val program: DrawingProgram = new DrawingProgram()
+    implicit val ProgramService: DrawingProgram = new DrawingProgram()
+    implicit val FillAreaServices: FillAreaProgram = new FillAreaProgram(ProgramService)
 
     logger.info(
       """
@@ -45,19 +47,19 @@ object App extends Controller {
         lazy val in4: String = coordinates(3)
 
         command match {
-          case "C" =>
+          case "C" if numberInputs == 2 =>
             CreateCanvas(in1, in2).safeRun
-          case "L" =>
+          case "L" if numberInputs == 4 =>
             DrawLine(in1, in2, in3, in4).safeRun
-          case "R" =>
+          case "R" if numberInputs == 4 =>
             DrawSquare(in1, in2, in3, in4).safeRun
-          case "B" =>
+          case "B" if numberInputs == 3 =>
             FillArea(in1, in2, in3).safeRun
           case "Q" =>
             logger.info("Gracefully closing program.")
             break()
           case _ =>
-            logger.info("Command is not implemented.")
+            logger.info("Command is not implemented and/or inputs are not correctly introduced.")
         }
       }
     }
