@@ -13,9 +13,9 @@ lazy val root = (project in file("."))
     assembly / assemblyJarName := "canvas.jar",
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % scalatestVersion,
+      "org.scalatest" %% "scalatest-featurespec" % scalatestFeatureVersion,
       "ch.qos.logback" % "logback-classic" % logbackVersion,
-      "org.slf4j" % "log4j-over-slf4j" % slf4jVersion,
-      "org.typelevel" %% "cats-core" % catsEffects
+      "org.slf4j" % "log4j-over-slf4j" % slf4jVersion
     )
   )
   .enablePlugins(JmhPlugin)

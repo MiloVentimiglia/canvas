@@ -6,7 +6,7 @@ import core.FillAreaService.FillAreaProgram
 import scala.util.control.Breaks.breakable
 import org.slf4j.{Logger, LoggerFactory}
 
-object App extends Controller with Implicits {
+object Boot extends Controller with Implicits {
 
   def main(args: Array[String]): Unit = {
 
@@ -35,12 +35,7 @@ object App extends Controller with Implicits {
 
     breakable {
       while (true) {
-        val inputTokens: List[String] = StdIn.readLine().split(" ").filter(_.nonEmpty).toList
-        val command: String = inputTokens.head
-        val coordinates: List[String] = inputTokens.tail
-
-        controller(command, coordinates)
-
+        controller(StdIn.readLine())
       }
     }
   }

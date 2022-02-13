@@ -11,8 +11,11 @@ trait Controller extends Implicits {
 
   override lazy val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
-  def controller(command: String, coordinates: List[String])
-                (implicit program: DrawingProgram, fillAreaProgram: FillAreaProgram): Unit = {
+  def controller(input: String)(implicit program: DrawingProgram, fillAreaProgram: FillAreaProgram): Unit = {
+
+    val inputTokens: List[String] = input.split(" ").filter(_.nonEmpty).toList
+    val command: String = inputTokens.head
+    val coordinates: List[String] = inputTokens.tail
 
     val numberInputs: Int = coordinates.length
     lazy val in1: String = coordinates(0)
