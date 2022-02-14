@@ -24,6 +24,8 @@ To boot the application execute ```sbt run``` in the command line and introduce 
                2. Repeat step 2
           4. Repeat step 2 and 3 until the accummulator-iteration ratio is below 1E-4.
 
+
+
          Example:
 
          iter=0, acc=0          iter=1, acc=1          iter=2, acc=2          iter=3, acc=2
