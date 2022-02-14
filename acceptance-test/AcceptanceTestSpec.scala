@@ -238,5 +238,21 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Then("the canvas is filled")
       drawingProgram.displayCanvas
     }
+
+
+
+    Scenario("Filling empty area in the canvas with edge corners or narrow areas different from the example") {
+      Given("a canvas")
+      drawingProgram.createCanvas(30, 40)
+
+      When("with narrow channels and complex inner shapes")
+      drawingProgram.drawSquare(24, 30, 27, 38)
+      drawingProgram.drawSquare(3, 5, 10, 10)
+
+      Then("the canvas is filled")
+      drawingProgram.displayCanvas
+      fillingProgram.fillingArea(3, 3,"o")
+      drawingProgram.displayCanvas
+    }
   }
 }
