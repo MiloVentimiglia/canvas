@@ -34,9 +34,7 @@ object Boot extends Controller with Implicits {
         |""".stripMargin)
 
     breakable {
-      while (true) {
-        controller(StdIn.readLine())
-      }
+      while (true) controller(StdIn.readLine())
     }
   }
 }

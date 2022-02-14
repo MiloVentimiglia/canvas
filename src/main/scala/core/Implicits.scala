@@ -1,26 +1,25 @@
 package core
 
-import core.FillAreaService.FillAreaProgram
 import core.model._
 import core.DrawingService.DrawingProgram
-import org.slf4j.{Logger, LoggerFactory}
-
-import scala.util.Try
+import core.FillAreaService.FillAreaProgram
 
 
 trait Implicits {
 
   import Implicits._
-  lazy val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   trait IOMessage[T] {
     def isInputCorrect: Boolean
+
     def safeRun: Unit
   }
 
-  implicit class CreateCanvasSafe(val input: CreateCanvas)(implicit program: DrawingProgram) extends IOMessage[Feature] {
+  implicit class CreateCanvasSafe(val input: CreateCanvas)
+                                 (implicit program: DrawingProgram) extends IOMessage[Feature] {
     implicit val args: List[String] = List(input.width, input.height)
-    override def isInputCorrect: Boolean = isCoordinatesTypesCorrect
+
+    override def isInputCorrect: Boolean = isCoordinatesTypesCorrect & isCoordinatesPositiveInt
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
@@ -31,42 +30,44 @@ trait Implicits {
         program.displayCanvas
 
       } else {
-        logger.info("Coordinates are not numerical.")
+        println("Coordinates are not positive numerical values.")
       }
     }
   }
 
 
-  implicit class DrawLineSafe(val input: DrawLine)(implicit program: DrawingProgram) extends IOMessage[Feature] {
+  implicit class DrawLineSafe(val input: DrawLine)
+                             (implicit program: DrawingProgram) extends IOMessage[Feature] {
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
-    override def isInputCorrect: Boolean = (!isCanvasEmpty) & (!isDiagonalLine) & isCoordinatesTypesCorrect
+
+    override def isInputCorrect: Boolean = (!isCanvasEmpty) & (!isDiagonalLine) & isCoordinatesTypesCorrect & isCoordinatesPositiveInt
 
     override def safeRun: Unit = {
-     if (isInputCorrect) {
+      if (isInputCorrect) {
         val x1: Int = input.x1.toInt
         val y1: Int = input.y1.toInt
         val x2: Int = input.x2.toInt
         val y2: Int = input.y2.toInt
 
-        if ((y1 == y2) && isXCoordinatesOrdered){
+        if ((y1 == y2) && isXCoordinatesOrdered) {
           program.drawHorizontalLine(x1, y1, x2)
           program.displayCanvas
-
         } else if ((x1 == x2) && isYCoordinatesOrdered) {
           program.drawVerticalLine(x1, y1, x2, y2)
           program.displayCanvas
+        } else {
+          println("Arguments are not correctly introduced or canvas does not exist.")
         }
-
-      } else {
-        logger.info("Arguments are not correctly introduced or canvas does not exist.")
       }
     }
   }
 
 
-  implicit class DrawSquareSafe(val input: DrawSquare)(implicit program: DrawingProgram) extends IOMessage[Feature] {
+  implicit class DrawSquareSafe(val input: DrawSquare)
+                               (implicit program: DrawingProgram) extends IOMessage[Feature] {
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
-    override def isInputCorrect: Boolean = (!isCanvasEmpty) && isXCoordinatesOrdered && isYCoordinatesOrdered
+
+    override def isInputCorrect: Boolean = (!isCanvasEmpty) && isXCoordinatesOrdered && isYCoordinatesOrdered & isCoordinatesPositiveInt
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
@@ -78,15 +79,17 @@ trait Implicits {
         program.drawSquare(x1, y1, x2, y2)
         program.displayCanvas
       } else {
-        logger.info("Arguments are not correctly introduced or canvas does not exist.")
+        println("Arguments are not correctly introduced or canvas does not exist.")
       }
     }
   }
 
 
-  implicit class FillAreaSafe(val input: FillArea)(implicit program: DrawingProgram, fillService: FillAreaProgram) extends IOMessage[Feature] {
+  implicit class FillAreaSafe(val input: FillArea)
+                             (implicit program: DrawingProgram, fillService: FillAreaProgram) extends IOMessage[Feature] {
     implicit val args: List[String] = List(input.x, input.y, input.colour)
-    override def isInputCorrect: Boolean = !isCanvasEmpty
+
+    override def isInputCorrect: Boolean = !isCanvasEmpty & isCoordinatesPositiveInt
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
@@ -97,7 +100,7 @@ trait Implicits {
         fillService.fillingArea(x1, y1, colour)
         program.displayCanvas
       } else {
-        logger.info("Arguments are not correctly introduced or canvas does not exist.")
+        println("Arguments are not correctly introduced or canvas does not exist.")
       }
     }
   }
@@ -111,11 +114,14 @@ object Implicits {
   def isCoordinatesTypesCorrect(implicit inputs: List[String]): Boolean =
     inputs.map(_.safeToInt).forall(_.isDefined)
 
+  def isCoordinatesPositiveInt(implicit inputs: List[String]): Boolean =
+    inputs.map(_.safeToInt).map(x => x.getOrElse(0) > 0).reduce(_ && _)
+
   def isYCoordinatesOrdered(implicit inputs: List[String]): Boolean =
-    Try(inputs(3).toInt > inputs(1).toInt).isSuccess
+    try {inputs(3).toInt > inputs(1).toInt} catch {case e: Exception => false; case _ => true}
 
   def isXCoordinatesOrdered(implicit inputs: List[String]): Boolean =
-    Try(inputs(2).toInt > inputs(0).toInt).isSuccess
+    try {inputs(2).toInt > inputs(0).toInt} catch {case e: Exception => false; case _ => true}
 
   def isDiagonalLine(implicit inputs: List[String]): Boolean =
     inputs.to(Set).size == inputs.length

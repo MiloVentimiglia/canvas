@@ -3,15 +3,13 @@ package core
 import core.model._
 import core.DrawingService.DrawingProgram
 import core.FillAreaService.FillAreaProgram
-import org.slf4j.{Logger, LoggerFactory}
 import scala.util.control.Breaks.break
 
 trait Controller extends Implicits {
   this: Implicits =>
 
-  override lazy val logger: Logger = LoggerFactory.getLogger(this.getClass)
-
-  def controller(input: String)(implicit program: DrawingProgram, fillAreaProgram: FillAreaProgram): Unit = {
+  def controller(input: String)
+                (implicit program: DrawingProgram, fillAreaProgram: FillAreaProgram): Unit = {
 
     val inputTokens: List[String] = input.split(" ").filter(_.nonEmpty).toList
     val command: String = inputTokens.head
@@ -33,10 +31,10 @@ trait Controller extends Implicits {
       case "B" if numberInputs == 3 =>
         FillArea(in1, in2, in3).safeRun
       case "Q" =>
-        logger.info("Gracefully closing program.")
+        println("Gracefully closing program.")
         break()
       case _ =>
-        logger.info("Command is not implemented and/or inputs are not correctly introduced.")
+        println("Command is not implemented and/or inputs are not correctly introduced.")
     }
   }
 
