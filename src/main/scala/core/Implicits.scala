@@ -4,6 +4,8 @@ import core.model._
 import core.DrawingService.DrawingProgram
 import core.FillAreaService.FillAreaProgram
 
+import scala.annotation.tailrec
+
 
 trait Implicits {
 
@@ -11,12 +13,12 @@ trait Implicits {
 
   trait IOMessage[T] {
     def isInputCorrect: Boolean
-
     def safeRun: Unit
   }
 
   implicit class CreateCanvasSafe(val input: CreateCanvas)
                                  (implicit program: DrawingProgram) extends IOMessage[Feature] {
+
     implicit val args: List[String] = List(input.width, input.height)
 
     override def isInputCorrect: Boolean = isCoordinatesTypesCorrect & isCoordinatesPositiveInt
@@ -38,6 +40,7 @@ trait Implicits {
 
   implicit class DrawLineSafe(val input: DrawLine)
                              (implicit program: DrawingProgram) extends IOMessage[Feature] {
+
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
 
     override def isInputCorrect: Boolean = (!isCanvasEmpty) & (!isDiagonalLine) & isCoordinatesTypesCorrect & isCoordinatesPositiveInt
@@ -67,9 +70,10 @@ trait Implicits {
 
   implicit class DrawSquareSafe(val input: DrawSquare)
                                (implicit program: DrawingProgram) extends IOMessage[Feature] {
+
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
 
-    override def isInputCorrect: Boolean = (!isCanvasEmpty) && isXCoordinatesOrdered && isYCoordinatesOrdered & isCoordinatesPositiveInt
+    override def isInputCorrect: Boolean = (!isCanvasEmpty) & isXCoordinatesOrdered & isYCoordinatesOrdered & isCoordinatesPositiveInt
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
@@ -89,9 +93,11 @@ trait Implicits {
 
   implicit class FillAreaSafe(val input: FillArea)
                              (implicit program: DrawingProgram, fillService: FillAreaProgram) extends IOMessage[Feature] {
-    implicit val args: List[String] = List(input.x, input.y, input.colour)
 
-    override def isInputCorrect: Boolean = !isCanvasEmpty & isCoordinatesPositiveInt
+    implicit val coordinates: List[String]  = List(input.x, input.y)
+    implicit val colour: String  = input.colour
+
+    override def isInputCorrect: Boolean = !isCanvasEmpty & isCoordinatesTypesCorrect & isCoordinatesPositiveInt & isColourCorrect & isNodeBlank
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
@@ -120,13 +126,19 @@ object Implicits {
     inputs.map(_.safeToInt).map(x => x.getOrElse(0) > 0).reduce(_ && _)
 
   def isYCoordinatesOrdered(implicit inputs: List[String]): Boolean =
-    try {inputs(3).toInt > inputs(1).toInt} catch {case e: Exception => false; case _ => true}
+    try {inputs(3).toInt > inputs(1).toInt} catch {case _: Exception => false; case _ => true}
 
   def isXCoordinatesOrdered(implicit inputs: List[String]): Boolean =
-    try {inputs(2).toInt > inputs(0).toInt} catch {case e: Exception => false; case _ => true}
+    try {inputs(2).toInt > inputs(0).toInt} catch {case _: Exception => false; case _ => true}
 
   def isDiagonalLine(implicit inputs: List[String]): Boolean =
     inputs.to(Set).size == inputs.length
+
+  def isColourCorrect(implicit colour: String): Boolean =
+    colour.matches("^[a-z]*$") & (!colour.contains("x, |, -"))
+
+  def isNodeBlank(implicit inputs: List[String], colour: String, program: DrawingProgram): Boolean =
+    program.canvas(inputs(1).toInt).substring(inputs(0).toInt).isBlank
 
   implicit class RichOptionConvert(val s: String) extends AnyVal {
     def safeToInt: Option[Int] =
@@ -136,6 +148,12 @@ object Implicits {
         case _: NullPointerException => None
         case _: NumberFormatException => None
       }
+  }
+
+  @tailrec
+  def recEval(funcs: => List[Boolean], acc: Boolean = true): Boolean = {
+    if (!acc) acc
+    else recEval(funcs.tail, funcs.head & acc)
   }
 }
 
