@@ -2,11 +2,12 @@
 
 ## How to run the application:
 To boot the application execute ```sbt run``` in the command line and introduce the following commands:
-1. Create Canvas: C 20 4
-2. Draw Horizontal Line: L 1 2 6 2
-3. Draw Vertical Line: L 6 3 6 4
-4. Draw Square: R 14 1 18 3
-5. Fill area: B 10 3 o
+
+     1. Create Canvas: C 20 4
+     2. Draw Horizontal Line: L 1 2 6 2
+     3. Draw Vertical Line: L 6 3 6 4
+     4. Draw Square: R 14 1 18 3
+     5. Fill area: B 10 3 o
 
 ## Area Filling Algorithm:
 
