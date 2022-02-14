@@ -5,6 +5,7 @@ import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.GivenWhenThen
 import java.io.ByteArrayOutputStream
 
+
 class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
 
   implicit val drawingProgram: DrawingProgram = new DrawingProgram()
