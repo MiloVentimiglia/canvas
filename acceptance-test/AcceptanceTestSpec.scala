@@ -4,7 +4,7 @@ import core.FillAreaService.FillAreaProgram
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.GivenWhenThen
 import java.io.ByteArrayOutputStream
-
+import scala.util.control._
 
 class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
 
@@ -24,7 +24,6 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Then("the following canvas is displayed")
       assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
     }
-
 
 
     Scenario("Creating canvas and one of the inputs is not numerical") {
@@ -240,7 +239,6 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
     }
 
 
-
     Scenario("Filling empty area in the canvas with edge corners or narrow areas different from the example") {
       Given("a canvas")
       drawingProgram.createCanvas(30, 40)
@@ -251,8 +249,25 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
 
       Then("the canvas is filled")
       drawingProgram.displayCanvas
-      fillingProgram.fillingArea(3, 3,"o")
+      fillingProgram.fillingArea(3, 3, "o")
       drawingProgram.displayCanvas
     }
   }
+
+
+  Feature("Reaction to unimplemented methods") {
+
+    Scenario("Introducing a non implemented command") {
+      Given("the S 12 4")
+      val in: String = "S"
+
+      When("the input is passed to the app")
+      val out: ByteArrayOutputStream = new ByteArrayOutputStream()
+      Console.withOut(out)(controller(in))
+
+      Then("the output message is.")
+      assert(out.toString().contains("Command is not implemented and/or inputs are not correctly introduced."))
+    }
+  }
+
 }

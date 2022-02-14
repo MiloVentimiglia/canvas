@@ -16,9 +16,7 @@ trait Implicits {
 
   implicit class CreateCanvasSafe(val input: CreateCanvas)
                                  (implicit program: DrawingProgram) extends IOMessage[Feature] {
-
     implicit val args: List[String] = List(input.width, input.height)
-
     override def isInputCorrect: Boolean = isCoordinatesTypesCorrect && isCoordinatesPositiveInt
 
     override def safeRun: Unit = {
@@ -38,9 +36,7 @@ trait Implicits {
 
   implicit class DrawLineSafe(val input: DrawLine)
                              (implicit program: DrawingProgram) extends IOMessage[Feature] {
-
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
-
     override def isInputCorrect: Boolean =
       (!isCanvasEmpty) && (!isDiagonalLine) && isCoordinatesTypesCorrect && isCoordinatesPositiveInt
 
@@ -69,9 +65,7 @@ trait Implicits {
 
   implicit class DrawSquareSafe(val input: DrawSquare)
                                (implicit program: DrawingProgram) extends IOMessage[Feature] {
-
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
-
     override def isInputCorrect: Boolean =
       (!isCanvasEmpty) && isXCoordinatesOrdered && isYCoordinatesOrdered && isCoordinatesPositiveInt
 
@@ -93,7 +87,6 @@ trait Implicits {
 
   implicit class FillAreaSafe(val input: FillArea)
                              (implicit program: DrawingProgram, fillService: FillAreaProgram) extends IOMessage[Feature] {
-
     implicit val coordinates: List[String]  = List(input.x, input.y)
     implicit val colour: String  = input.colour
 
