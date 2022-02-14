@@ -10,19 +10,19 @@ To boot the application execute ```sbt run``` in the command line and introduce 
 
 ## Area Filling Algorithm:
 
- 1. Pick initial point in the canvas (represented below as "Ö").
- 2. Check which neighboring nodes are blank and colored.
- 3. IF AN BLANK NODE EXISTS:
-   a1. Move at random to one of the blank nodes.
-   a2. Split the respective horizontal line in 2 substrings. Replace trailing whitespaces
-       on the left substring with the colour. Likewise, replace leading whitespaces with
-       the colour on the right substring.
-   a3. Increment iter and acc.
-   a4. Repeat step 2
-   ELSE:
-   a1. Move to a colored neighboring node randomly and increment iter.
-   a2. Repeat step 2
- 4. Repeat step 2 and 3 until the accummulator-iteration ratio is below 1E-4.
+Markup : 1. Pick initial point in the canvas (represented below as "Ö").
+         2. Check which neighboring nodes are blank and colored.
+         3. IF AN BLANK NODE EXISTS:
+            1. Move at random to one of the blank nodes.
+            2. Split the respective horizontal line in 2 substrings. Replace trailing whitespaces
+               on the left substring with the colour. Likewise, replace leading whitespaces with
+               the colour on the right substring.
+            3. Increment iter and acc.
+            4. Repeat step 2
+            ELSE:
+            1. Move to a colored neighboring node randomly and increment iter.
+            2. Repeat step 2
+         4. Repeat step 2 and 3 until the accummulator-iteration ratio is below 1E-4.
 
 
 ## Microbenchmark Harness:
