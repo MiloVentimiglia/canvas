@@ -56,8 +56,10 @@ trait Implicits {
           program.drawVerticalLine(x1, y1, x2, y2)
           program.displayCanvas
         } else {
-          println("Arguments are not correctly introduced or canvas does not exist.")
+          println("Arguments are swapped.")
         }
+      } else {
+        println("Arguments are not correctly introduced or canvas does not exist.")
       }
     }
   }

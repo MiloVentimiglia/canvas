@@ -40,6 +40,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with BeforeAndAfter with GivenWh
       assert(out.toString().contains("Coordinates are not positive numerical values."))
     }
 
+
     Scenario("Creating canvas and one of the inputs is non positive") {
       Given("a width and height of -1 4")
       val in = "C -1 4"
@@ -51,6 +52,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with BeforeAndAfter with GivenWh
       Then("the canvas is not created and the output message is")
       assert(out.toString().contains("Coordinates are not positive numerical values."))
     }
+
 
     Scenario("Creating canvas and one of the inputs is zero") {
       Given("a width and height of 0 4")
@@ -100,7 +102,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with BeforeAndAfter with GivenWh
       Console.withOut(out)(controller(in))
 
       Then("the horizontal line is visible in the canvas")
-      assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
+      assert(out.toString().contains("Arguments are swapped."))
     }
   }
 
