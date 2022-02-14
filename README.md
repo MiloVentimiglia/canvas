@@ -10,7 +10,7 @@ To boot the application execute ```sbt run``` in the command line and introduce 
 
 ## Area Filling Algorithm:
 
- Markup : 1. Pick initial point in the canvas (represented below as "Ö").
+          1. Pick initial point in the canvas (represented below as "Ö").
           2. Check which neighboring nodes are blank and colored.
           3. IF AN BLANK NODE EXISTS:
                1. Move at random to one of the blank nodes.
@@ -24,11 +24,6 @@ To boot the application execute ```sbt run``` in the command line and introduce 
                2. Repeat step 2
           4. Repeat step 2 and 3 until the accummulator-iteration ratio is below 1E-4.
 
-
- Markup : 1. A numbered list
-              1. A nested numbered list
-              2. Which is numbered
-          2. Which is numbered
 
 ## Microbenchmark Harness:
 
