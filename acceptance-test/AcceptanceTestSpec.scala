@@ -4,7 +4,6 @@ import core.FillAreaService.FillAreaProgram
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.GivenWhenThen
 import java.io.ByteArrayOutputStream
-import scala.util.control._
 
 class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
 
