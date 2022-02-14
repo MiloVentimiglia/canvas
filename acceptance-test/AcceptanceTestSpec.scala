@@ -25,6 +25,8 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
     }
 
+
+
     Scenario("Creating canvas and one of the inputs is not numerical") {
       Given("the input C x 4")
       val in: String = "C x 4"
@@ -38,7 +40,6 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
     }
 
 
-
     Scenario("Creating canvas and one of the inputs is negative") {
       Given("the input C -1 4")
       val in: String = "C -1 4"
@@ -50,7 +51,6 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Then("the canvas is not created and the output message is")
       assert(out.toString().contains("Coordinates are not positive numerical values."))
     }
-
 
 
     Scenario("Creating canvas and one of the inputs is zero") {
@@ -82,7 +82,6 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
   Feature("Draw horizontal and vertical lines") {
 
 
-
     Scenario("Drawing a horizontal or vertical line and one of the inputs is not numerical") {
       Given("the input L 1 2 6 x")
       val in: String = "L 1 x 6 x"
@@ -96,7 +95,6 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
     }
 
 
-
     Scenario("Drawing a horizontal or vertical line when inputs are swapped") {
       Given("the input L 6 2 1 2 (instead of L 1 2 6 2)")
       val in: String = "L 6 2 1 2"
@@ -108,7 +106,6 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Then("the output message is.")
       assert(out.toString().contains("Arguments are swapped."))
     }
-
 
 
     Scenario("Trying to draw a diagonal line") {
@@ -136,7 +133,6 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
     }
 
 
-
     Scenario("Drawing a vertical line") {
       Given("the input L 6 3 6 4")
       val in: String = "L 6 3 6 4"
@@ -148,7 +144,6 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       drawingProgram.displayCanvas
     }
   }
-
 
 
   Feature("Draw square") {
@@ -165,6 +160,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
     }
 
+
     Scenario("Drawing a square and inputs are swapped") {
       Given("the input R 18 1 14 3")
       val in: String = "R 18 1 14 3"
@@ -176,6 +172,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Then("the output message is.")
       assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
     }
+
 
     Scenario("Drawing a square in the canvas") {
       Given("the input R 14 1 18 3")
@@ -192,7 +189,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
 
   Feature("Fill area with colour") {
 
-    Scenario("Filling empty area in the canvas and one of the inputs is not numerical") {
+    Scenario("One of the inputs is not numerical") {
       Given("the input B 10 a o")
       val in: String = "B 10 a o"
 
@@ -204,7 +201,8 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
     }
 
-    Scenario("Filling empty area in the canvas and one of the inputs is negative") {
+
+    Scenario("One of the inputs is negative") {
       Given("the input B 10 -3 o")
       val in: String = "B 10 -3 o"
 
@@ -216,6 +214,20 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
     }
 
+
+    Scenario("The colour symbol is x") {
+      Given("the input B 10 3 x")
+      val in: String = "B 10 3 x"
+
+      When("the input is passed to the app")
+      val out: ByteArrayOutputStream = new ByteArrayOutputStream()
+      Console.withOut(out)(controller(in))
+
+      Then("the output message is.")
+      assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
+    }
+
+
     Scenario("Filling empty area in the canvas") {
       Given("the input B 10 3 o")
       val in: String = "B 10 3 o"
@@ -226,19 +238,5 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Then("the canvas is filled")
       drawingProgram.displayCanvas
     }
-
-
   }
-
-
-
-
-
-
-
-
-
-
-
-
-  }
+}

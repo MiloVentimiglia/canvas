@@ -4,8 +4,6 @@ import core.model._
 import core.DrawingService.DrawingProgram
 import core.FillAreaService.FillAreaProgram
 
-import scala.annotation.tailrec
-
 
 trait Implicits {
 
@@ -21,7 +19,7 @@ trait Implicits {
 
     implicit val args: List[String] = List(input.width, input.height)
 
-    override def isInputCorrect: Boolean = isCoordinatesTypesCorrect & isCoordinatesPositiveInt
+    override def isInputCorrect: Boolean = isCoordinatesTypesCorrect && isCoordinatesPositiveInt
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
@@ -43,7 +41,8 @@ trait Implicits {
 
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
 
-    override def isInputCorrect: Boolean = (!isCanvasEmpty) & (!isDiagonalLine) & isCoordinatesTypesCorrect & isCoordinatesPositiveInt
+    override def isInputCorrect: Boolean =
+      (!isCanvasEmpty) && (!isDiagonalLine) && isCoordinatesTypesCorrect && isCoordinatesPositiveInt
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
@@ -73,7 +72,8 @@ trait Implicits {
 
     implicit val args: List[String] = List(input.x1, input.y1, input.x2, input.y2)
 
-    override def isInputCorrect: Boolean = (!isCanvasEmpty) & isXCoordinatesOrdered & isYCoordinatesOrdered & isCoordinatesPositiveInt
+    override def isInputCorrect: Boolean =
+      (!isCanvasEmpty) && isXCoordinatesOrdered && isYCoordinatesOrdered && isCoordinatesPositiveInt
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
@@ -97,10 +97,12 @@ trait Implicits {
     implicit val coordinates: List[String]  = List(input.x, input.y)
     implicit val colour: String  = input.colour
 
-    override def isInputCorrect: Boolean = !isCanvasEmpty & isCoordinatesTypesCorrect & isCoordinatesPositiveInt & isColourCorrect & isNodeBlank
+    override def isInputCorrect: Boolean =
+      !isCanvasEmpty && isCoordinatesTypesCorrect && isCoordinatesPositiveInt && isColourCorrect && isStartNodeBlank
 
     override def safeRun: Unit = {
       if (isInputCorrect) {
+
         val x1: Int = input.x.toInt
         val y1: Int = input.y.toInt
         val colour: String = input.colour
@@ -135,10 +137,10 @@ object Implicits {
     inputs.to(Set).size == inputs.length
 
   def isColourCorrect(implicit colour: String): Boolean =
-    colour.matches("^[a-z]*$") & (!colour.contains("x, |, -"))
+    colour.matches("[^x|-]")
 
-  def isNodeBlank(implicit inputs: List[String], colour: String, program: DrawingProgram): Boolean =
-    program.canvas(inputs(1).toInt).substring(inputs(0).toInt).isBlank
+  def isStartNodeBlank(implicit inputs: List[String], colour: String, program: DrawingProgram): Boolean =
+    program.canvas(inputs(1).toInt)(inputs(0).toInt).isWhitespace
 
   implicit class RichOptionConvert(val s: String) extends AnyVal {
     def safeToInt: Option[Int] =
@@ -148,12 +150,6 @@ object Implicits {
         case _: NullPointerException => None
         case _: NumberFormatException => None
       }
-  }
-
-  @tailrec
-  def recEval(funcs: => List[Boolean], acc: Boolean = true): Boolean = {
-    if (!acc) acc
-    else recEval(funcs.tail, funcs.head & acc)
   }
 }
 
