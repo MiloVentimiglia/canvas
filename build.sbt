@@ -7,7 +7,6 @@ ThisBuild / isSnapshot := true
 
 mainClass in (Compile, run) := Some("core.Boot")
 assembly / mainClass := Some("core.Boot")
-//assembly / assemblyJarName := "canvas.jar"
 
 
 lazy val root = (project in file("."))
