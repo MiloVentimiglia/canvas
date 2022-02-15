@@ -5,12 +5,14 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "2.13.8"
 ThisBuild / isSnapshot := true
 
+mainClass in (Compile, run) := Some("core.Boot")
+assembly / mainClass := Some("core.Boot")
+//assembly / assemblyJarName := "canvas.jar"
+
 
 lazy val root = (project in file("."))
   .settings(
     name := "canvas",
-    assembly / mainClass := Some("core.Boot"),
-    assembly / assemblyJarName := "canvas.jar",
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % scalatestVersion,
       "org.scalatest" %% "scalatest-featurespec" % scalatestFeatureVersion,
@@ -20,3 +22,4 @@ lazy val root = (project in file("."))
   )
   .enablePlugins(JmhPlugin)
   .enablePlugins(JavaAppPackaging)
+  .enablePlugins(DockerPlugin)

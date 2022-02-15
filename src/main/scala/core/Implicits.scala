@@ -121,10 +121,10 @@ object Implicits {
     inputs.map(_.safeToInt).map(x => x.getOrElse(0) > 0).reduce(_ && _)
 
   def isYCoordinatesOrdered(implicit inputs: List[String]): Boolean =
-    try {inputs(3).toInt > inputs(1).toInt} catch {case _: Exception => false; case _ => true}
+    try {inputs(3).toInt > inputs(1).toInt} catch {case _: Throwable => false; case _ => true}
 
   def isXCoordinatesOrdered(implicit inputs: List[String]): Boolean =
-    try {inputs(2).toInt > inputs(0).toInt} catch {case _: Exception => false; case _ => true}
+    try {inputs(2).toInt > inputs(0).toInt} catch {case _: Throwable => false; case _ => true}
 
   def isDiagonalLine(implicit inputs: List[String]): Boolean =
     inputs.to(Set).size == inputs.length
