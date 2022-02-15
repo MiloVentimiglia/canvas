@@ -5,7 +5,7 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "2.13.8"
 ThisBuild / isSnapshot := true
 
-//mainClass in (Compile, run) := Some("core.Boot")
+mainClass in (Compile, run) := Some("core.Boot")
 assembly / mainClass := Some("core.Boot")
 
 
