@@ -1,4 +1,4 @@
-package core.DrawingService
+package core.drawingservice
 
 import scala.collection.mutable
 

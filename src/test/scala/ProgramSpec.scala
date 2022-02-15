@@ -1,6 +1,6 @@
 import core.Implicits._
-import core.DrawingService.DrawingProgram
-import core.FillAreaService.FillAreaProgram
+import core.drawingservice.DrawingProgram
+import core.fillareaservice.FillAreaProgram
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfter, PrivateMethodTester}
@@ -12,7 +12,7 @@ class ProgramSpec extends AnyFlatSpec with Matchers with BeforeAndAfter with Pri
   import DrawingProgram._
   import FillAreaProgram._
 
-  implicit val program = new DrawingProgram().createCanvas(40, 30)
+  implicit val program: DrawingProgram = new DrawingProgram().createCanvas(40, 30)
   implicit val fillArea: FillAreaProgram = new FillAreaProgram(program)
   val colour = "o"
 

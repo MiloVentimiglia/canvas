@@ -1,8 +1,8 @@
 package core
 
 import core.model._
-import core.DrawingService.DrawingProgram
-import core.FillAreaService.FillAreaProgram
+import core.drawingservice.DrawingProgram
+import core.fillareaservice.FillAreaProgram
 import scala.util.control.Breaks.break
 
 trait Controller extends Implicits {

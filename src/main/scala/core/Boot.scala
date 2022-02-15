@@ -1,8 +1,8 @@
 package core
 
 import scala.io.StdIn
-import core.DrawingService.DrawingProgram
-import core.FillAreaService.FillAreaProgram
+import core.drawingservice.DrawingProgram
+import core.fillareaservice.FillAreaProgram
 import scala.util.control.Breaks.breakable
 import org.slf4j.{Logger, LoggerFactory}
 

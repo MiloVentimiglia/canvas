@@ -1,12 +1,13 @@
 import core.Boot.controller
-import core.DrawingService.DrawingProgram
-import core.FillAreaService.FillAreaProgram
+import core.drawingservice.DrawingProgram
+import core.fillareaservice.FillAreaProgram
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.GivenWhenThen
+import org.scalatest.matchers.should.Matchers
 import java.io.ByteArrayOutputStream
 
 
-class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
+class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen with Matchers {
 
   implicit val drawingProgram: DrawingProgram = new DrawingProgram()
   implicit val fillingProgram: FillAreaProgram = new FillAreaProgram(drawingProgram)
@@ -22,7 +23,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the following canvas is displayed")
-      assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
+      out.toString().trim() should be ("Arguments are not correctly introduced or canvas does not exist.")
     }
 
 
@@ -34,8 +35,8 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       val out: ByteArrayOutputStream = new ByteArrayOutputStream()
       Console.withOut(out)(controller(in))
 
-      Then("the canvas is not created and the output message is")
-      assert(out.toString().contains("Coordinates are not positive numerical values."))
+      Then("the output message is")
+      out.toString().trim() should be ("Coordinates are not positive numerical values.")
     }
 
 
@@ -47,8 +48,8 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       val out: ByteArrayOutputStream = new ByteArrayOutputStream()
       Console.withOut(out)(controller(in))
 
-      Then("the canvas is not created and the output message is")
-      assert(out.toString().contains("Coordinates are not positive numerical values."))
+      Then("the output message is")
+      out.toString().trim() should be ("Coordinates are not positive numerical values.")
     }
 
 
@@ -61,7 +62,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the canvas is not created and the output message is")
-      assert(out.toString().contains("Coordinates are not positive numerical values."))
+      out.toString().trim() should be ("Coordinates are not positive numerical values.")
     }
 
 
@@ -90,7 +91,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the output message is.")
-      assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
+      out.toString().trim() should be ("Arguments are not correctly introduced or canvas does not exist.")
     }
 
 
@@ -103,7 +104,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the output message is.")
-      assert(out.toString().contains("Arguments are swapped."))
+      out.toString().trim() should be ("Arguments are swapped.")
     }
 
 
@@ -116,7 +117,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the output message is.")
-      assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
+      out.toString().trim() should be ("Arguments are not correctly introduced or canvas does not exist.")
     }
 
 
@@ -156,7 +157,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the output message is.")
-      assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
+      out.toString().trim() should be ("Arguments are not correctly introduced or canvas does not exist.")
     }
 
 
@@ -169,7 +170,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the output message is.")
-      assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
+      out.toString().trim() should be ("Arguments are not correctly introduced or canvas does not exist.")
     }
 
 
@@ -197,7 +198,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the output message is.")
-      assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
+      out.toString().trim() should be ("Arguments are not correctly introduced or canvas does not exist.")
     }
 
 
@@ -210,7 +211,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the output message is.")
-      assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
+      out.toString().trim() should be ("Arguments are not correctly introduced or canvas does not exist.")
     }
 
 
@@ -223,7 +224,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the output message is.")
-      assert(out.toString().contains("Arguments are not correctly introduced or canvas does not exist."))
+      out.toString().trim() should be ("Arguments are not correctly introduced or canvas does not exist.")
     }
 
 
@@ -266,7 +267,7 @@ class AcceptanceTestSpec extends AnyFeatureSpec with GivenWhenThen {
       Console.withOut(out)(controller(in))
 
       Then("the output message is.")
-      assert(out.toString().contains("Command is not implemented and/or inputs are not correctly introduced."))
+      out.toString().trim() should be ("Command is not implemented and/or inputs are not correctly introduced.")
     }
   }
 

@@ -1,9 +1,9 @@
-package core.FillAreaService
+package core.fillareaservice
 
 import scala.util.{Failure, Random, Success, Try}
 import scala.annotation.tailrec
-import core.DrawingService.DrawingProgram
-import core.DrawingService.DrawingProgram._
+import core.drawingservice.DrawingProgram
+import core.drawingservice.DrawingProgram._
 
 final class FillAreaProgram(val program: DrawingProgram) {
 
