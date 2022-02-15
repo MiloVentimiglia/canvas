@@ -17,7 +17,8 @@ a ```canvas-assembly-0.1.0-SNAPSHOT.jar``` file in the target folder which, in t
 can be used anywhere provided there is a JVM. To run the jar file execute either:
 
 ```scala canvas-assembly-0.1.0-SNAPSHOT.jar```
-```java -jar canvas-assembly-0.1.0-SNAPSHOT.jar```.
+
+```java -jar canvas-assembly-0.1.0-SNAPSHOT.jar```
 
 
 ## How to deploy and run the dockerized application:
