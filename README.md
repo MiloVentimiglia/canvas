@@ -14,8 +14,10 @@ To boot the application execute ```sbt run``` in the command line and introduce 
 
 To assembly a fat jar execute ```sbt assembly``` in the command line. This will create
 a ```canvas-assembly-0.1.0-SNAPSHOT.jar``` file in the target folder which, in turn,
-can be used anywhere provided there is a JVM. To run the jar file execute
-```scala canvas-assembly-0.1.0-SNAPSHOT.jar``` or ```java -jar canvas-assembly-0.1.0-SNAPSHOT.jar```.
+can be used anywhere provided there is a JVM. To run the jar file execute either:
+
+```scala canvas-assembly-0.1.0-SNAPSHOT.jar```
+```java -jar canvas-assembly-0.1.0-SNAPSHOT.jar```.
 
 
 ## How to deploy and run the dockerized application:
@@ -42,10 +44,10 @@ in the command line.
                   on the left substring with the colour. Likewise, replace leading whitespaces with
                   the colour on the right substring.
                3. Increment iter and acc.
-               4. Repeat step 2
+               4. Move to step 2
             ELSE:
                1. Move to a colored neighboring node randomly and increment iter.
-               2. Repeat step 2
+               2. Move to step 2
           4. Repeat step 2 and 3 until the accummulator-iteration ratio is below 1E-4.
 
 
