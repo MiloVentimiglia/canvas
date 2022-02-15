@@ -14,7 +14,8 @@ To boot the application execute ```sbt run``` in the command line and introduce 
 
 To assembly a fat jar execute ```sbt assembly``` in the command line. This will create
 a ```canvas-assembly-0.1.0-SNAPSHOT.jar``` file in the target folder which, in turn,
-can be used anywhere provided there is a JVM. To run the jar file execute either:
+can be used anywhere provided there is a JVM. To execute the jar file run either of
+the commands in the shell:
 
 ```scala canvas-assembly-0.1.0-SNAPSHOT.jar```
 
@@ -31,7 +32,7 @@ docker images available in the OS ```docker images```. One should see:
        canvas        0.1.0-SNAPSHOT   655626f4279c   10 seconds ago   494MB
 
 
-To execute the dockerized application execute ```docker run --rm -ti canvas:0.1.0-SNAPSHOT```
+To execute the dockerized application run ```docker run --rm -ti canvas:0.1.0-SNAPSHOT```
 in the command line.
 
 
