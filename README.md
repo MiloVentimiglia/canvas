@@ -27,7 +27,7 @@ To run the dockerized version of the application, first publish the project loca
 by executing ```sbt docker:publishLocal```. Once it is completed search for the
 docker images available in the OS ```docker images```. One should see:
 
-     REPOSITORY    TAG                 IMAGE ID       CREATED          SIZE
+     REPOSITORY           TAG           IMAGE ID        CREATED       SIZE
        canvas        0.1.0-SNAPSHOT   655626f4279c   10 seconds ago   494MB
 
 
