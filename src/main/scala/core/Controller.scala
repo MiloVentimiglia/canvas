@@ -16,6 +16,7 @@ trait Controller extends Implicits {
 
     lazy val coordinates: List[String] = inputTokens.tail
     lazy val numberInputs: Int = coordinates.length
+
     lazy val in1: String = coordinates(0)
     lazy val in2: String = coordinates(1)
     lazy val in3: String = coordinates(2)
